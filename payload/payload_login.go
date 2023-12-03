@@ -1,11 +1,15 @@
 package payload
 
 import (
-	"app/model"
 	"encoding/json"
 	"log"
 	"time"
 )
+
+type Login struct {
+	User_Name string `json:"user_name" validate:"required"`
+	PassWord  string `json:"password" validate:"required"`
+}
 
 type AddStudentRequest struct {
 	FirstName    string    `json:"first_name" validate:"required"`
@@ -20,20 +24,20 @@ type AddStudentRequest struct {
 	NewDueDate   *time.Time
 }
 
-func (c *AddStudentRequest) ToModel() *model.Student {
-	student := &model.Student{
-		FirstName:    c.FirstName,
-		LastName:     c.LastName,
-		Age:          c.Age,
-		Grade:        c.Grade,
-		ClassName:    c.ClassName,
-		EntranceDate: c.EntranceDate,
-		CreatedAt:    c.CreatedAt,
-		UpdatedAt:    c.UpdatedAt,
-	}
+// func (c *AddStudentRequest) ToModel() *model.Student {
+// 	student := &model.Student{
+// 		FirstName:    c.FirstName,
+// 		LastName:     c.LastName,
+// 		Age:          c.Age,
+// 		Grade:        c.Grade,
+// 		ClassName:    c.ClassName,
+// 		EntranceDate: c.EntranceDate,
+// 		CreatedAt:    c.CreatedAt,
+// 		UpdatedAt:    c.UpdatedAt,
+// 	}
 
-	return student
-}
+// 	return student
+// }
 
 func (c *AddStudentRequest) FromJson(a string) {
 	err := json.Unmarshal([]byte(a), c)

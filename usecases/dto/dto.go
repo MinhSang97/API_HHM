@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+type Login struct {
+	User_Name string
+	PassWord  string
+}
+
 type Student struct {
 	ID           int64     `json:"id"`
 	FirstName    string    `json:"first_name" validate:"required" gorm:"-"`
@@ -17,17 +22,10 @@ type Student struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 
-func (c *Student) ToPayload() *payload.AddStudentRequest {
-	studentPayload := &payload.AddStudentRequest{
-		FirstName:    c.FirstName,
-		LastName:     c.LastName,
-		Age:          c.Age,
-		Grade:        c.Grade,
-		ClassName:    c.ClassName,
-		EntranceDate: c.EntranceDate,
-		CreatedAt:    c.CreatedAt,
-		UpdatedAt:    c.UpdatedAt,
+func (c *Login) ToPayload() *payload.Login {
+	login := &payload.Login{
+		User_Name: c.User_Name,
+		PassWord:  c.PassWord,
 	}
-
-	return studentPayload
+	return login
 }

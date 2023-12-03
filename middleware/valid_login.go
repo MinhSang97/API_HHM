@@ -1,8 +1,26 @@
 package middleware
 
-import "gorm.io/gorm"
+import (
+	"app/handler"
+	"context"
 
-func valid_login(db *gorm.DB){
-	result := db.execute("Tokens").Find(&tokens)
+	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
+)
 
+func ValidLogin(db *gorm.DB) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		API_UserName := handler.Login(&API_UserName) // Set your API_UserName
+		API_PassWord := "some_value" // Set your API_Password
+
+		// Add values to the context
+		ctx := context.WithValue(c.Request.Context(), "API_UserName", API_UserName)
+		ctx = context.WithValue(ctx, "API_Password", API_PassWord)
+
+		// Update the context in the Gin request
+		c.Request = c.Request.WithContext(ctx)
+
+		// Call the next handler
+		c.Next()
+	}
 }

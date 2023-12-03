@@ -30,6 +30,7 @@ func Route() {
 
 	r := gin.Default()
 	r.Use(middleware.ErrorHandler())
+	r.Use(middleware.ValidLogin(db))
 
 	r.GET("/secure", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "This is a secure route"})
