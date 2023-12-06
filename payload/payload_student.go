@@ -1,13 +1,14 @@
-package dto
+package payload
 
 import (
-	"app/payload"
+	"app/model"
+	"encoding/json"
+	"log"
 	"time"
 )
 
-type Student struct {
-	ID           int64     `json:"id"`
-	FirstName    string    `json:"first_name" validate:"required" gorm:"-"`
+type AddStudentRequest struct {
+	FirstName    string    `json:"first_name" validate:"required"`
 	LastName     string    `json:"last_name" validate:"required"`
 	Age          int       `json:"age" validate:"required,gt=0"`
 	Grade        float32   `json:"grade" validate:"gte=0,lte=10"`
@@ -17,8 +18,18 @@ type Student struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 
-func (c *Student) ToPayload() *payload.AddStudentRequest {
-	studentPayload := &payload.AddStudentRequest{
+type AddTokensRequest struct {
+	Token      int64     `json:"token"`
+	UserName   string    `json:"user_name" validate:"required"`
+	Password   string    `json:"password" validate:"required"`
+	Logindate  time.Time `json:"login_date"`
+	ExpireDate time.Time `json:"expire_date"`
+	ExpireTime time.Time `json:"expire_time"`
+	IPAddress  string    `json:"ip_address"`
+}
+
+func (c *AddStudentRequest) ToModel() *model.Student {
+	student := &model.Student{
 		FirstName:    c.FirstName,
 		LastName:     c.LastName,
 		Age:          c.Age,
@@ -28,21 +39,12 @@ func (c *Student) ToPayload() *payload.AddStudentRequest {
 		CreatedAt:    c.CreatedAt,
 		UpdatedAt:    c.UpdatedAt,
 	}
-	return studentPayload
+
+	return student
 }
 
-type Tokens struct {
-	Token      int64     `json:"token"`
-	UserName   string    `json:"user_name"`
-	Password   string    `json:"password"`
-	Logindate  time.Time `json:"login_date"`
-	ExpireDate time.Time `json:"expire_date"`
-	ExpireTime time.Time `json:"expire_time"`
-	IPAddress  string    `json:"ip_address"`
-}
-
-func (c *Tokens) ToPayload() *payload.AddTokensRequest {
-	tokenPayload := &payload.AddTokensRequest{
+func (c *AddTokensRequest) ToModel() *model.Tokens {
+	token := &model.Tokens{
 		Token:      c.Token,
 		UserName:   c.UserName,
 		Password:   c.Password,
@@ -51,5 +53,13 @@ func (c *Tokens) ToPayload() *payload.AddTokensRequest {
 		ExpireTime: c.ExpireTime,
 		IPAddress:  c.IPAddress,
 	}
-	return tokenPayload
+
+	return token
+}
+
+func (c *AddStudentRequest) FromJson(a string) {
+	err := json.Unmarshal([]byte(a), c)
+	if err != nil {
+		log.Fatalln(err)
+	}
 }

@@ -23,6 +23,10 @@ func Route() {
 	// GET /v1/items/:id (get item detail by id)
 	// (PUT | PATCH) /v1/items/:id (update an item by id)
 	// DELETE /v1/items/:id (delete item by id)
+	// viper.SetConfigFile("config.yaml")
+	// if err := viper.ReadInConfig(); err != nil {
+	// 	panic(err)
+	// }
 
 	// Your existing code to set up routes and database
 
@@ -30,7 +34,7 @@ func Route() {
 
 	r := gin.Default()
 	r.Use(middleware.ErrorHandler())
-	r.Use(middleware.ValidLogin(db))
+	// r.Use(middleware.BasicAuthMiddleware())
 
 	r.GET("/secure", func(c *gin.Context) {
 		c.JSON(200, gin.H{"message": "This is a secure route"})

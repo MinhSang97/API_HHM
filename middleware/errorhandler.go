@@ -2,9 +2,8 @@ package middleware
 
 import (
 	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 func ErrorHandler() gin.HandlerFunc {
@@ -27,4 +26,3 @@ func ErrorHandler() gin.HandlerFunc {
 		}
 	}
 }
-
