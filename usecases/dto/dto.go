@@ -32,7 +32,7 @@ func (c *Student) ToPayload() *payload.AddStudentRequest {
 }
 
 type Tokens struct {
-	Token      int64     `json:"token"`
+	Token      string    `json:"token"`
 	UserName   string    `json:"user_name"`
 	Password   string    `json:"password"`
 	Logindate  time.Time `json:"login_date"`

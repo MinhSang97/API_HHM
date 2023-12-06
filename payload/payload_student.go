@@ -19,7 +19,7 @@ type AddStudentRequest struct {
 }
 
 type AddTokensRequest struct {
-	Token      int64     `json:"token"`
+	Token      string    `json:"token"`
 	UserName   string    `json:"user_name" validate:"required"`
 	Password   string    `json:"password" validate:"required"`
 	Logindate  time.Time `json:"login_date"`

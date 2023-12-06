@@ -92,8 +92,8 @@ type loginRepository struct {
 func (s loginRepository) Search(ctx context.Context, API_User, API_PassWord string) ([]model.Tokens, error) {
 	var tokens []model.Tokens
 
-	// Use Find method instead of Where
-	if err := s.db.Where("user_name = ? AND password = ?", "%"+API_User+"%", "%"+API_PassWord+"%").
+	// Use ? instead of % in the WHERE clause
+	if err := s.db.Where("user_name = ? AND password = ?", API_User, API_PassWord).
 		Find(&tokens).Error; err != nil {
 		return nil, err
 	}

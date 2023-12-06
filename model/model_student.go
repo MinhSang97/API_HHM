@@ -18,7 +18,7 @@ type Student struct {
 	UpdatedAt    time.Time `json:"updated_at"`
 }
 type Tokens struct {
-	Token      int64     `json:"token"`
+	Token      string    `json:"token"`
 	UserName   string    `json:"user_name"`
 	Password   string    `json:"password"`
 	Logindate  time.Time `json:"login_date"`
@@ -28,7 +28,7 @@ type Tokens struct {
 }
 
 func (c *Tokens) TableName() string {
-	return "token"
+	return "tokens"
 }
 
 func (c *Student) TableName() string {
