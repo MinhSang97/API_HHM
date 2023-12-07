@@ -4,6 +4,7 @@ import (
 	"app/dbutil"
 	"app/handler"
 	"app/middleware"
+	"context"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -34,27 +35,17 @@ func Route() {
 
 	r := gin.Default()
 	r.Use(middleware.ErrorHandler())
+
 	// r.Use(middleware.BasicAuthMiddleware())
 
-	r.GET("/secure", func(c *gin.Context) {
-		c.JSON(200, gin.H{"message": "This is a secure route"})
+	r.GET("/login", func(c *gin.Context) {
+		API_User := c.Query("user")
+		API_PassWord := c.Query("password")
+
+		r.Use(middleware.ValidLogin(context.Background(), db, API_User, API_PassWord))
+
+		handler.Login(db)(c)
 	})
-
-	r.GET("/login", handler.Login(db))
-
-	// v1 := r.Group("/v1")
-	// {
-	// 	items := v1.Group("/items")
-	// 	{
-	// 		items.POST("", handler.CreateItem(db))
-	// 		items.GET("", handler.GetAllStudent(db))
-	// 		items.GET("/:id", handler.GetId(db))
-	// 		items.PATCH("/:id", handler.Update_One(db))
-	// 		items.DELETE("/:id", handler.Delete_One(db))
-	// 		items.GET("/search", handler.SearchStudents(db))
-
-	// 	}
-	// }
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 
