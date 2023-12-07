@@ -27,7 +27,7 @@ func Login(db *gorm.DB) func(*gin.Context) {
 
 		uc := usecases.NewLoginUseCase()
 
-		user, err := uc.Search(c.Request.Context(), API_User, API_PassWord)
+		tokens, err := uc.Search(c.Request.Context(), API_User, API_PassWord)
 		if err != nil {
 			c.JSON(http.StatusInternalServerError, gin.H{
 				"error": err.Error(),
@@ -35,8 +35,10 @@ func Login(db *gorm.DB) func(*gin.Context) {
 			return
 		}
 
+		tokenResponse := tokens[0].Token
+
 		c.JSON(http.StatusOK, gin.H{
-			"user": user, // Update the key to match the actual data structure
+			"token": tokenResponse,
 		})
 	}
 }
