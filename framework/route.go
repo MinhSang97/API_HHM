@@ -4,7 +4,6 @@ import (
 	"app/dbutil"
 	"app/handler"
 	"app/middleware"
-	"context"
 	"fmt"
 
 	"github.com/gin-gonic/gin"
@@ -35,17 +34,13 @@ func Route() {
 
 	r := gin.Default()
 	r.Use(middleware.ErrorHandler())
+	r.Use(middleware.AuthMiddleware())
 
 	// r.Use(middleware.BasicAuthMiddleware())
 
-	r.GET("/login", func(c *gin.Context) {
-		API_User := c.Query("user")
-		API_PassWord := c.Query("password")
+	loginHandler := handler.NewLoginHandler()
 
-		r.Use(middleware.ValidLogin(context.Background(), db, API_User, API_PassWord))
-
-		handler.Login(db)(c)
-	})
+	r.GET("/login", loginHandler.Login)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 

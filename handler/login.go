@@ -1,44 +1,57 @@
 package handler
 
 import (
+	"app/payload"
 	"app/usecases"
+	"errors"
 	"fmt"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 )
 
-func Login(db *gorm.DB) func(*gin.Context) {
-	return func(c *gin.Context) {
-		// Lấy giá trị của các tham số từ query string
-		API_User := c.Query("user")
-		API_PassWord := c.Query("password")
+type LoginHandler struct {
+}
 
-		fmt.Println("Seach with like", API_User, API_PassWord)
+func NewLoginHandler() LoginHandler {
+	return LoginHandler{}
+}
 
-		// Kiểm tra xem có ít nhất một tham số được truyền vào không
-		if API_User == "" && API_PassWord == "" {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": "At least one search parameter is required",
-			})
-			return
-		}
+func (l LoginHandler) Login(ginCtx *gin.Context) {
+	loginRequest := payload.UserLoginRequest{}
+	// Lấy giá trị của các tham số từ query string
 
-		uc := usecases.NewLoginUseCase()
-
-		tokens, err := uc.Search(c.Request.Context(), API_User, API_PassWord)
-		if err != nil {
-			c.JSON(http.StatusInternalServerError, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-
-		tokenResponse := tokens[0].Token
-
-		c.JSON(http.StatusOK, gin.H{
-			"token": tokenResponse,
+	if err := ginCtx.ShouldBindJSON(&loginRequest); err != nil {
+		ginCtx.JSON(http.StatusBadRequest, payload.Response{
+			Error: fmt.Errorf("Login error: %w", err).Error(),
 		})
 	}
+	fmt.Println("Seach with like", loginRequest.Username, loginRequest.Password)
+
+	// Kiểm tra xem có ít nhất một tham số được truyền vào không
+	if loginRequest.Username == "" || loginRequest.Password == "" {
+		ginCtx.JSON(http.StatusBadRequest, payload.Response{
+			Error: errors.New("At least one search parameter is required").Error(),
+		})
+		return
+	}
+
+	uc := usecases.NewLoginUseCase()
+
+	tokens, err := uc.Search(ginCtx.Request.Context(), loginRequest.Username, loginRequest.Password)
+	if err != nil {
+		ginCtx.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	tokenResponse := tokens[0].Token
+
+	ginCtx.JSON(http.StatusOK, payload.Response{
+		Data: gin.H{
+			"token": tokenResponse,
+		},
+	})
+
 }
