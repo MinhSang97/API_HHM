@@ -3,6 +3,7 @@ package repo
 import (
 	"app/model"
 	"context"
+	"time"
 )
 
 type StudentRepo interface {
@@ -16,4 +17,8 @@ type StudentRepo interface {
 
 type LoginRepo interface {
 	Search(ctx context.Context, API_User, API_PassWord string) ([]model.Tokens, error)
+}
+
+type MeterRepo interface {
+	Search(ctx context.Context, MeterAssetNo int64, ReceiveTime time.Time) ([]model.Meters, error)
 }

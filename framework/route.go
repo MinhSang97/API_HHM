@@ -33,14 +33,19 @@ func Route() {
 	// Register your route, passing the configuration
 
 	r := gin.Default()
-	r.Use(middleware.ErrorHandler())
-	r.Use(middleware.AuthMiddleware())
-
-	// r.Use(middleware.BasicAuthMiddleware())
-
+	// Khởi tạo handler
 	loginHandler := handler.NewLoginHandler()
 
+	// Route đăng nhập không cần xác thực
 	r.GET("/login", loginHandler.Login)
+
+	// Nhóm các route cần xác thực
+	authorized := r.Group("/")
+	authorized.Use(middleware.AuthMiddleware())
+	{
+		// Route yêu cầu đã đăng nhập
+		authorized.GET("/data", loginHandler.GetMeter)
+	}
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 

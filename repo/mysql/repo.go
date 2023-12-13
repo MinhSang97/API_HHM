@@ -5,8 +5,8 @@ import (
 	"app/repo"
 	"context"
 	"fmt"
-
 	"gorm.io/gorm"
+	"time"
 )
 
 type studentRepository struct {
@@ -91,6 +91,25 @@ type loginRepository struct {
 
 func (s loginRepository) Search(ctx context.Context, API_User, API_PassWord string) ([]model.Tokens, error) {
 	var tokens []model.Tokens
+
+	//currentDate := time.Now().Format("2006-01-02")
+	//currentTime := time.Now().Format("15:04")
+	//
+	//var tokenString string
+	//
+	//tokenString = "hhm1997" + API_User + API_PassWord + currentDate + currentTime
+	//
+	//hash := sha256.Sum256([]byte(tokenString))
+	//token := hex.EncodeToString(hash[:])
+	//fmt.Println(token)
+	//
+	loginDate := time.Now().Format("2006-01-02 15:04:30")
+	fmt.Println(loginDate)
+	//if err := s.db.Where("token = ?", token).
+	//	Updates(&tokens).Error; err != nil {
+	//	return nil, fmt.Errorf("insert token error: %w", err)
+	//}
+	//return tokens, nil
 
 	// Use ? instead of % in the WHERE clause
 	if err := s.db.Where("user_name = ? AND password = ?", API_User, API_PassWord).

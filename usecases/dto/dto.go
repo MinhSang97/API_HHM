@@ -53,3 +53,16 @@ func (c *Tokens) ToPayload() *payload.AddTokensRequest {
 	}
 	return tokenPayload
 }
+
+type Meters struct {
+	MeterAssetNo int64     `json:"meter_asset_no"`
+	ReceiveTime  time.Time `json:"receive_time"`
+}
+
+func (c *Meters) ToPayload() *payload.MetersRequest {
+	metersPayload := &payload.MetersRequest{
+		MeterAssetNo: c.MeterAssetNo,
+		ReceiveTime:  c.ReceiveTime,
+	}
+	return metersPayload
+}

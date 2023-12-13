@@ -45,6 +45,8 @@ func (uc *studentUseCase) Search(ctx context.Context, Value string) ([]model.Stu
 	return uc.studentRepo.Search(ctx, Value)
 }
 
+///////////////////////
+
 type loginUseCase struct {
 	loginRepo repo.LoginRepo
 }

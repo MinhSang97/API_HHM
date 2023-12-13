@@ -17,6 +17,11 @@ type Student struct {
 	CreatedAt    time.Time `json:"created_at"`
 	UpdatedAt    time.Time `json:"updated_at"`
 }
+
+func (c *Student) TableName() string {
+	return "students"
+}
+
 type Tokens struct {
 	Token      string    `json:"token"`
 	UserName   string    `json:"user_name"`
@@ -31,8 +36,13 @@ func (c *Tokens) TableName() string {
 	return "tokens"
 }
 
-func (c *Student) TableName() string {
-	return "students"
+type Meters struct {
+	MeterAssetNo int64     `json:"meter_asset_no"`
+	ReceiveTime  time.Time `json:"receive_time"`
+}
+
+func (c *Meters) TableName() string {
+	return "meters"
 }
 
 func (c *Student) ToJson() string {
