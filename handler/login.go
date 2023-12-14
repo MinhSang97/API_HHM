@@ -5,9 +5,8 @@ import (
 	"app/usecases"
 	"errors"
 	"fmt"
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"net/http"
 )
 
 type LoginHandler struct {
@@ -18,6 +17,7 @@ func NewLoginHandler() LoginHandler {
 }
 
 func (l LoginHandler) Login(ginCtx *gin.Context) {
+
 	loginRequest := payload.UserLoginRequest{}
 	// Lấy giá trị của các tham số từ query string
 
