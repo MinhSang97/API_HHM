@@ -26,8 +26,8 @@ type Tokens struct {
 	Token      string    `json:"token"`
 	UserName   string    `json:"user_name"`
 	Password   string    `json:"password"`
-	Logindate  time.Time `json:"login_date"`
-	ExpireDate time.Time `json:"expire_date"`
+	LoginDate  time.Time `json:"login_date"`
+	ExpireDate time.Time `json:"expire_Date"`
 	ExpireTime time.Time `json:"expire_time"`
 	IPAddress  string    `json:"ip_address"`
 }
@@ -37,8 +37,8 @@ func (c *Tokens) TableName() string {
 }
 
 type Meters struct {
-	MeterAssetNo int64     `json:"meter_asset_no"`
-	ReceiveTime  time.Time `json:"receive_time"`
+	MeterAssetNo int64  `json:"meter_asset_no"`
+	ReceiveTime  string `json:"receive_time"`
 }
 
 func (c *Meters) TableName() string {

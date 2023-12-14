@@ -48,8 +48,8 @@ func (c *AddTokensRequest) ToModel() *model.Tokens {
 		Token:      c.Token,
 		UserName:   c.UserName,
 		Password:   c.Password,
-		Logindate:  c.Logindate,
-		ExpireDate: c.ExpireDate,
+		LoginDate:  c.Logindate,
+		ExpireDate: c.ExpireTime,
 		ExpireTime: c.ExpireTime,
 		IPAddress:  c.IPAddress,
 	}

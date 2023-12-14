@@ -4,12 +4,11 @@ import (
 	"app/model"
 	"encoding/json"
 	"log"
-	"time"
 )
 
 type MetersRequest struct {
-	MeterAssetNo int64     `json:"meter_asset_no"`
-	ReceiveTime  time.Time `json:"receive_time"`
+	MeterAssetNo int64  `json:"meter_asset_no"`
+	ReceiveTime  string `json:"receive_time"`
 }
 
 func (c *MetersRequest) ToModel() *model.Meters {

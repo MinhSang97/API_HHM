@@ -3,7 +3,6 @@ package usecases
 import (
 	"app/model"
 	"context"
-	"time"
 )
 
 type StudentUsecase interface {
@@ -20,5 +19,5 @@ type LoginUsecase interface {
 }
 
 type MeterUsecase interface {
-	Search(ctx context.Context, MeterAssetNo int64, ReceiveTime time.Time) ([]model.Meters, error)
+	Search(ctx context.Context, MeterAssetNo int64, ReceiveTime string) ([]model.Meters, error)
 }

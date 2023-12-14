@@ -13,23 +13,23 @@ import (
 type MeterHandler struct {
 }
 
-func NewMeterHandler() LoginHandler {
-	return LoginHandler{}
+func NewMeterHandler() MeterHandler {
+	return MeterHandler{}
 }
 
 func (l LoginHandler) GetMeter(ginCtx *gin.Context) {
-	loginRequest := payload.UserLoginRequest{}
+	meterRequest := payload.MetersRequest{}
 	// Lấy giá trị của các tham số từ query string
 
-	if err := ginCtx.ShouldBindJSON(&loginRequest); err != nil {
+	if err := ginCtx.ShouldBindJSON(&meterRequest); err != nil {
 		ginCtx.JSON(http.StatusBadRequest, payload.Response{
 			Error: fmt.Errorf("Login error: %w", err).Error(),
 		})
 	}
-	fmt.Println("Seach with like", loginRequest.Username, loginRequest.Password)
+	fmt.Println("Seach with like", meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
 
 	// Kiểm tra xem có ít nhất một tham số được truyền vào không
-	if loginRequest.Username == "" || loginRequest.Password == "" {
+	if meterRequest.MeterAssetNo == "" || meterRequest.ReceiveTime == "" {
 		ginCtx.JSON(http.StatusBadRequest, payload.Response{
 			Error: errors.New("At least one search parameter is required").Error(),
 		})
@@ -38,7 +38,7 @@ func (l LoginHandler) GetMeter(ginCtx *gin.Context) {
 
 	uc := usecases.NewLoginUseCase()
 
-	tokens, err := uc.Search(ginCtx.Request.Context(), loginRequest.Username, loginRequest.Password)
+	tokens, err := uc.Search(ginCtx.Request.Context(), meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
 	if err != nil {
 		ginCtx.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
