@@ -43,8 +43,9 @@ func Route() {
 	authorized := r.Group("/")
 	authorized.Use(middleware.AuthMiddleware())
 	{
+		meterHandler := handler.NewMeterHandler()
 		// Route yêu cầu đã đăng nhập
-		authorized.GET("/data", loginHandler.GetMeter)
+		authorized.GET("/data", meterHandler.GetMeter)
 
 	}
 

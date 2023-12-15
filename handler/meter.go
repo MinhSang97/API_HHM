@@ -17,13 +17,13 @@ func NewMeterHandler() MeterHandler {
 	return MeterHandler{}
 }
 
-func (l LoginHandler) GetMeter(ginCtx *gin.Context) {
+func (l MeterHandler) GetMeter(ginCtx *gin.Context) {
 	meterRequest := payload.MetersRequest{}
 	// Lấy giá trị của các tham số từ query string
 
-	if err := ginCtx.ShouldBindJSON(&meterRequest); err != nil {
+	if err := ginCtx.ShouldBindQuery(&meterRequest); err != nil {
 		ginCtx.JSON(http.StatusBadRequest, payload.Response{
-			Error: fmt.Errorf("Login error: %w", err).Error(),
+			Error: fmt.Errorf("Get data error: %w", err).Error(),
 		})
 	}
 	fmt.Println("Seach with like", meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
@@ -36,7 +36,7 @@ func (l LoginHandler) GetMeter(ginCtx *gin.Context) {
 		return
 	}
 
-	uc := usecases.NewLoginUseCase()
+	uc := usecases.NewMeterUseCase()
 
 	tokens, err := uc.Search(ginCtx.Request.Context(), meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
 	if err != nil {
@@ -46,11 +46,11 @@ func (l LoginHandler) GetMeter(ginCtx *gin.Context) {
 		return
 	}
 
-	tokenResponse := tokens[0].Token
+	tokenResponse := tokens[0]
 
 	ginCtx.JSON(http.StatusOK, payload.Response{
 		Data: gin.H{
-			"token": tokenResponse,
+			"data": tokenResponse,
 		},
 	})
 

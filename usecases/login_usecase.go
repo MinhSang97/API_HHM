@@ -59,6 +59,6 @@ func NewLoginUseCase() LoginUsecase {
 	}
 }
 
-func (uc *loginUseCase) Search(ctx context.Context, API_User, API_PassWord string) ([]model.Tokens, error) {
-	return uc.loginRepo.Search(ctx, API_User, API_PassWord)
+func (uc *loginUseCase) Search(ctx context.Context, ApiUser, ApiPassword string) ([]model.Tokens, error) {
+	return uc.loginRepo.Search(ctx, ApiUser, ApiPassword)
 }

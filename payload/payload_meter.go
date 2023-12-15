@@ -7,7 +7,7 @@ import (
 )
 
 type MetersRequest struct {
-	MeterAssetNo int64  `json:"meter_asset_no"`
+	MeterAssetNo string `json:"meter_asset_no"`
 	ReceiveTime  string `json:"receive_time"`
 }
 

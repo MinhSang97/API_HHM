@@ -15,9 +15,9 @@ type StudentUsecase interface {
 }
 
 type LoginUsecase interface {
-	Search(ctx context.Context, API_User, API_PassWord string) ([]model.Tokens, error)
+	Search(ctx context.Context, ApiUser, ApiPassword string) ([]model.Tokens, error)
 }
 
 type MeterUsecase interface {
-	Search(ctx context.Context, MeterAssetNo int64, ReceiveTime string) ([]model.Meters, error)
+	Search(ctx context.Context, MeterAssetNo, ReceiveTime string) ([]model.Meters, error)
 }
