@@ -34,13 +34,13 @@ type MetersRequestToday struct {
 }
 
 func (c *MetersRequestToday) ToModel() *model.MetersToday {
-	meter := &model.MetersToday{
+	metertoday := &model.MetersToday{
 		MeterAssetNo: c.MeterAssetNo,
 		Start_date:   c.Start_date,
 		End_date:     c.End_date,
 	}
 
-	return meter
+	return metertoday
 }
 
 func (c *MetersRequestToday) FromJson(a string) {
