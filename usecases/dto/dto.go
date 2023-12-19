@@ -67,6 +67,22 @@ func (c *Meters) ToPayload() *payload.MetersRequest {
 	return metersPayload
 }
 
+type MetersRequestToday struct {
+	MeterAssetNo string `json:"meter_asset_no"`
+	Start_date   string `json:"start_date"`
+	End_date     string `json:"end_date"`
+}
+
+func (c *MetersRequestToday) ToPayload() *payload.MetersRequestToday {
+	meter := &payload.MetersRequestToday{
+		MeterAssetNo: c.MeterAssetNo,
+		Start_date:   c.Start_date,
+		End_date:     c.End_date,
+	}
+
+	return meter
+}
+
 type AddMeterRequest struct {
 	MA_DIEMDO             string
 	TENKHACHHANG          string

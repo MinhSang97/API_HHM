@@ -45,11 +45,21 @@ func (c *Meters) TableName() string {
 	return "meters"
 }
 
+type MetersToday struct {
+	MeterAssetNo string `json:"meter_asset_no"`
+	Start_date   string `json:"start_date"`
+	End_date     string `json:"end_date"`
+}
+
+func (c *MetersToday) TableName() string {
+	return "meterstoday"
+}
+
 type DataMeter struct {
 	MA_DIEMDO             string
 	TENKHACHHANG          string
-	NOCONGTO              string `json:"meter_asset_no"`
-	THOIGIANDOC           string `json:"receive_time"`
+	NOCONGTO              string
+	THOIGIANDOC           string
 	DN_HUUCONG_GIAO       float64
 	DN_HUUCONG_GIAO_BIEU1 float64
 	DN_HUUCONG_GIAO_BIEU2 float64

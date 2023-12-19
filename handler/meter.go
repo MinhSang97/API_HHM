@@ -6,6 +6,8 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,7 +28,7 @@ func (l MeterHandler) GetMeter(ginCtx *gin.Context) {
 			Error: fmt.Errorf("Get data error: %w", err).Error(),
 		})
 	}
-	fmt.Println("Seach with like", meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
+	fmt.Println("Search with like", meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
 
 	// Kiểm tra xem có ít nhất một tham số được truyền vào không
 	if meterRequest.MeterAssetNo == "" || meterRequest.ReceiveTime == "" {
@@ -35,6 +37,23 @@ func (l MeterHandler) GetMeter(ginCtx *gin.Context) {
 		})
 		return
 	}
+
+	str := meterRequest.ReceiveTime
+
+	t, err := time.Parse("02-01-06", str)
+	if err != nil {
+		panic(err)
+	}
+
+	month := t.Month()
+	monthStr := month.String()[0:3]
+
+	// Chuyển thành in hoa
+	monthStr = strings.ToUpper(monthStr)
+
+	formatted := fmt.Sprintf("%02d-%s-%02d", t.Day(), monthStr, t.Year()%100)
+
+	meterRequest.ReceiveTime = formatted
 
 	uc := usecases.NewMeterUseCase()
 
@@ -53,5 +72,4 @@ func (l MeterHandler) GetMeter(ginCtx *gin.Context) {
 			"data": tokenResponse,
 		},
 	})
-
 }

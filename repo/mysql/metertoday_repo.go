@@ -8,14 +8,16 @@ import (
 	"gorm.io/gorm"
 )
 
-type meterRepository struct {
+type meterTodayRepository struct {
 	db *gorm.DB
 }
 
-func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime string) ([]model.DataMeter, error) {
+func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, start_date, end_date string) ([]model.DataMeter, error) {
 	var meters []model.DataMeter
 
-	receiveTime = "%" + receiveTime + "%"
+	start_date = "%" + start_date + "%"
+
+	end_date = "%" + end_date + "%"
 
 	var meterModel string
 	if err := s.db.Raw("SELECT meter_model FROM a_equip_meter WHERE assetno = ?", meterAssetNo).Scan(&meterModel).Error; err != nil {
@@ -44,7 +46,7 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
 	LEFT JOIN BIZ_PUB_DATA_R_ENERGY_D g ON e.Data_ID = g.Data_ID) z
 	LEFT join BIZ_PUB_DATA_OTHER_D y
 	ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your query for HHM-V1 goes here
-		if err := s.db.Raw(query, meterAssetNo, receiveTime, receiveTime).
+		if err := s.db.Raw(query, meterAssetNo, start_date, end_date).
 			Scan(&meters).Error; err != nil {
 
 			return nil, err
@@ -68,7 +70,7 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
             ON e.Data_ID = g.Data_ID where e.METER_ASSET_NO = ? and g.tv LIKE ?)z
             LEFT join BIZ_PUB_DATA_OTHER_D y
             ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your query for HHM31/38 goes here
-		if err := s.db.Raw(query, meterAssetNo, receiveTime, meterAssetNo, receiveTime, receiveTime).
+		if err := s.db.Raw(query, meterAssetNo, end_date, meterAssetNo, end_date, end_date).
 			Scan(&meters).Error; err != nil {
 
 			return nil, err
@@ -90,7 +92,7 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
             ON e.Data_ID = g.Data_ID where e.METER_ASSET_NO = ? and g.tv LIKE ?)z
             LEFT join BIZ_PUB_DATA_OTHER_D y
             ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your query for HHM31/38 goes here
-			if err := s.db.Raw(query, meterAssetNo, receiveTime, meterAssetNo, receiveTime, receiveTime).
+			if err := s.db.Raw(query, meterAssetNo, end_date, meterAssetNo, end_date, end_date).
 				Scan(&meters).Error; err != nil {
 
 				return nil, err
@@ -116,7 +118,7 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
 	LEFT JOIN BIZ_PUB_DATA_R_ENERGY_D g ON e.Data_ID = g.Data_ID) z
 	LEFT join BIZ_PUB_DATA_OTHER_D y
 	ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your default query goes here
-		if err := s.db.Raw(query, meterAssetNo, receiveTime, receiveTime).
+		if err := s.db.Raw(query, meterAssetNo, end_date, end_date).
 			Scan(&meters).Error; err != nil {
 
 			return nil, err
@@ -128,12 +130,12 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
 	return meters, nil
 }
 
-var instancemeter meterRepository
+var instancemetertoday meterTodayRepository
 
-func NewMeterRepository(db *gorm.DB) repo.MeterRepo {
-	if instancemeter.db == nil {
-		instancemeter.db = db
+func NewMeterTodayRepository(db *gorm.DB) repo.MeterRepoToday {
+	if instancemetertoday.db == nil {
+		instancemetertoday.db = db
 
 	}
-	return instancemeter
+	return instancemetertoday
 }

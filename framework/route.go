@@ -46,6 +46,8 @@ func Route() {
 		meterHandler := handler.NewMeterHandler()
 		// Route yêu cầu đã đăng nhập
 		authorized.GET("/data", meterHandler.GetMeter)
+		meterTodayHandler := handler.NewMeterHandlerToday()
+		authorized.GET("/datatoday", meterTodayHandler.GetMeterToday)
 
 	}
 

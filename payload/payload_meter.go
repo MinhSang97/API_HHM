@@ -27,6 +27,29 @@ func (c *MetersRequest) FromJson(a string) {
 	}
 }
 
+type MetersRequestToday struct {
+	MeterAssetNo string `json:"meter_asset_no"`
+	Start_date   string `json:"start_date"`
+	End_date     string `json:"end_date"`
+}
+
+func (c *MetersRequestToday) ToModel() *model.MetersToday {
+	meter := &model.MetersToday{
+		MeterAssetNo: c.MeterAssetNo,
+		Start_date:   c.Start_date,
+		End_date:     c.End_date,
+	}
+
+	return meter
+}
+
+func (c *MetersRequestToday) FromJson(a string) {
+	err := json.Unmarshal([]byte(a), c)
+	if err != nil {
+		log.Fatalln(err)
+	}
+}
+
 type AddMeterRequest struct {
 	MA_DIEMDO             string
 	TENKHACHHANG          string
