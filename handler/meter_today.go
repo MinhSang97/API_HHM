@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
-	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -46,33 +45,29 @@ func (l MeterHandlerToday) GetMeterToday(ginCtx *gin.Context) {
 		panic(err)
 	}
 
-	month := t.Month()
-	monthStr := month.String()[0:3]
-
-	// Chuyển thành in hoa
-	monthStr = strings.ToUpper(monthStr)
-
-	outputStart_date := fmt.Sprintf("%02d-%s-%02d", t.Day(), monthStr, t.Year()%100)
+	// Format ra định dạng mong muốn
+	outputStart_date := t.Format("2006-01-02")
 
 	meterRequestToday.Start_date = outputStart_date
 
-	//output ngày ra
-	inputEnd_date := meterRequestToday.Start_date
+	fmt.Println("inputStart_date", outputStart_date)
 
-	t1, err2 := time.Parse("02-01-06", inputEnd_date)
-	if err2 != nil {
-		panic(err2)
+	//output ngày ra
+	inputEnd_date := meterRequestToday.End_date
+
+	t1, err := time.Parse("02-01-06", inputEnd_date)
+	if err != nil {
+		panic(err)
 	}
 
-	month1 := t1.Month()
-	monthStr1 := month1.String()[0:3]
-
-	// Chuyển thành in hoa
-	monthStr = strings.ToUpper(monthStr1)
-
-	outputEnd_date := fmt.Sprintf("%02d-%s-%02d", t.Day(), monthStr, t.Year()%100)
+	// Format ra định dạng mong muốn
+	outputEnd_date := t1.Format("2006-01-02")
 
 	meterRequestToday.Start_date = outputEnd_date
+
+	fmt.Println("outputEnd_date", meterRequestToday.Start_date)
+
+	/////
 
 	uc := usecases.NewMeterTodayUseCase()
 
@@ -84,11 +79,11 @@ func (l MeterHandlerToday) GetMeterToday(ginCtx *gin.Context) {
 		return
 	}
 
-	meterResponse := meters[0]
+	//meterResponse := meters[0]
 
 	ginCtx.JSON(http.StatusOK, payload.Response{
 		Data: gin.H{
-			"data": meterResponse,
+			"data": meters,
 		},
 	})
 }
