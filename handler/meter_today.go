@@ -65,7 +65,7 @@ func (l MeterHandlerToday) GetMeterToday(ginCtx *gin.Context) {
 
 	meterRequestToday.Start_date = outputEnd_date
 
-	fmt.Println("outputEnd_date", meterRequestToday.Start_date)
+	fmt.Println("outputEnd_date", outputEnd_date)
 
 	/////
 
@@ -79,11 +79,11 @@ func (l MeterHandlerToday) GetMeterToday(ginCtx *gin.Context) {
 		return
 	}
 
-	//meterResponse := meters[0]
+	meterResponse := meters[0]
 
 	ginCtx.JSON(http.StatusOK, payload.Response{
 		Data: gin.H{
-			"data": meters,
+			"data": meterResponse,
 		},
 	})
 }

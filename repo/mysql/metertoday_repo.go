@@ -12,12 +12,11 @@ type meterTodayRepository struct {
 	db *gorm.DB
 }
 
-func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, start_date, end_date string) ([]model.DataMeter, error) {
+func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, Start_date, End_date string) ([]model.DataMeter, error) {
 	var meters []model.DataMeter
 
-	start_date = "%" + start_date + "%"
-
-	end_date = "%" + end_date + "%"
+	fmt.Println(Start_date)
+	fmt.Println(End_date)
 
 	var meterModel string
 	if err := s.db.Raw("SELECT meter_model FROM a_equip_meter WHERE assetno = ?", meterAssetNo).Scan(&meterModel).Error; err != nil {
@@ -27,7 +26,6 @@ func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, start_da
 	fmt.Println("Meter Model:", meterModel)
 
 	if meterModel == "HHM-V1" {
-		// Query for HHM-V1
 		query := `SElECT DISTINCT z.Ma_DIEMDO, z.tenkhachhang, z.nocongto, y.MR_TIME_FA thoigiandoc, z.dn_huucong_giao, z.dn_huucong_giao_bieu1, z.dn_huucong_giao_bieu2, z.dn_huucong_giao_bieu3,
             z.dn_huucong_nhan, z.dn_huucong_nhan_bieu1, z.dn_huucong_nhan_bieu2, z.dn_huucong_nhan_bieu3, z.dn_vocong_giao, z.dn_vocong_giao_bieu1, z.dn_vocong_giao_bieu2, z.dn_vocong_giao_bieu3,
             z.dn_vocong_nhan, z.dn_vocong_nhan_bieu1, z.dn_vocong_nhan_bieu2, z.dn_vocong_nhan_bieu3
@@ -55,7 +53,7 @@ func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, start_da
     
         AND TRUNC(z.tv) >= TO_DATE(?, 'yyyy-mm-dd')
     AND TRUNC(z.tv) <= TO_DATE(?, 'yyyy-mm-dd')` // Your query for HHM-V1 goes here
-		if err := s.db.Raw(query, meterAssetNo, start_date, end_date, meterAssetNo, start_date, end_date, start_date, end_date).
+		if err := s.db.Raw(query, meterAssetNo, Start_date, End_date, meterAssetNo, Start_date, End_date, Start_date, End_date).
 			Scan(&meters).Error; err != nil {
 
 			return nil, err
@@ -79,7 +77,7 @@ func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, start_da
             ON e.Data_ID = g.Data_ID where e.METER_ASSET_NO = ? and g.tv LIKE ?)z
             LEFT join BIZ_PUB_DATA_OTHER_D y
             ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your query for HHM31/38 goes here
-		if err := s.db.Raw(query, meterAssetNo, end_date, meterAssetNo, end_date, end_date).
+		if err := s.db.Raw(query, meterAssetNo, End_date, meterAssetNo, End_date, End_date).
 			Scan(&meters).Error; err != nil {
 
 			return nil, err
@@ -101,7 +99,7 @@ func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, start_da
             ON e.Data_ID = g.Data_ID where e.METER_ASSET_NO = ? and g.tv LIKE ?)z
             LEFT join BIZ_PUB_DATA_OTHER_D y
             ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your query for HHM31/38 goes here
-			if err := s.db.Raw(query, meterAssetNo, end_date, meterAssetNo, end_date, end_date).
+			if err := s.db.Raw(query, meterAssetNo, End_date, meterAssetNo, End_date, End_date).
 				Scan(&meters).Error; err != nil {
 
 				return nil, err
@@ -127,7 +125,7 @@ func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, start_da
 	LEFT JOIN BIZ_PUB_DATA_R_ENERGY_D g ON e.Data_ID = g.Data_ID) z
 	LEFT join BIZ_PUB_DATA_OTHER_D y
 	ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your default query goes here
-		if err := s.db.Raw(query, meterAssetNo, end_date, end_date).
+		if err := s.db.Raw(query, meterAssetNo, End_date, End_date).
 			Scan(&meters).Error; err != nil {
 
 			return nil, err
