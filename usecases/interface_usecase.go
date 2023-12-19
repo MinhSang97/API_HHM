@@ -19,5 +19,5 @@ type LoginUsecase interface {
 }
 
 type MeterUsecase interface {
-	Search(ctx context.Context, MeterAssetNo, ReceiveTime string) ([]model.Meters, error)
+	Search(ctx context.Context, MeterAssetNo, ReceiveTime string) ([]model.DataMeter, error)
 }

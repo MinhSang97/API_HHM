@@ -20,6 +20,6 @@ func NewMeterUseCase() MeterUsecase {
 	}
 }
 
-func (uc *meterUseCase) Search(ctx context.Context, MeterAssetNo, ReceiveTime string) ([]model.Meters, error) {
+func (uc *meterUseCase) Search(ctx context.Context, MeterAssetNo, ReceiveTime string) ([]model.DataMeter, error) {
 	return uc.meterRepo.Search(ctx, MeterAssetNo, ReceiveTime)
 }

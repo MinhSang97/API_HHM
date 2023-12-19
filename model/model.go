@@ -45,6 +45,33 @@ func (c *Meters) TableName() string {
 	return "meters"
 }
 
+type DataMeter struct {
+	MA_DIEMDO             string
+	TENKHACHHANG          string
+	NOCONGTO              string `json:"meter_asset_no"`
+	THOIGIANDOC           string `json:"receive_time"`
+	DN_HUUCONG_GIAO       float64
+	DN_HUUCONG_GIAO_BIEU1 float64
+	DN_HUUCONG_GIAO_BIEU2 float64
+	DN_HUUCONG_GIAO_BIEU3 float64
+	DN_HUUCONG_NHAN       float64
+	DN_HUUCONG_NHAN_BIEU1 float64
+	DN_HUUCONG_NHAN_BIEU2 float64
+	DN_HUUCONG_NHAN_BIEU3 float64
+	DN_VOCONG_GIAO        float64
+	DN_VOCONG_GIAO_BIEU1  float64
+	DN_VOCONG_GIAO_BIEU2  float64
+	DN_VOCONG_GIAO_BIEU3  float64
+	DN_VOCONG_NHAN        float64
+	DN_VOCONG_NHAN_BIEU1  float64
+	DN_VOCONG_NHAN_BIEU2  float64
+	DN_VOCONG_NHAN_BIEU3  float64
+}
+
+func (c *DataMeter) TableName() string {
+	return "datameters"
+}
+
 func (c *Student) ToJson() string {
 	bs, err := json.Marshal(c)
 	if err != nil {
