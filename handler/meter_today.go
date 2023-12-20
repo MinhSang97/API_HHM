@@ -63,7 +63,7 @@ func (l MeterHandlerToday) GetMeterToday(ginCtx *gin.Context) {
 	// Format ra định dạng mong muốn
 	outputEnd_date := t1.Format("2006-01-02")
 
-	meterRequestToday.Start_date = outputEnd_date
+	meterRequestToday.End_date = outputEnd_date
 
 	fmt.Println("outputEnd_date", outputEnd_date)
 
@@ -79,11 +79,13 @@ func (l MeterHandlerToday) GetMeterToday(ginCtx *gin.Context) {
 		return
 	}
 
-	meterResponse := meters[0]
+	var responses []gin.H
+	for _, meter := range meters {
+		response := gin.H{"data": meter}
+		responses = append(responses, response)
+	}
 
 	ginCtx.JSON(http.StatusOK, payload.Response{
-		Data: gin.H{
-			"data": meterResponse,
-		},
+		Data: responses,
 	})
 }

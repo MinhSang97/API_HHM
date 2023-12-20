@@ -41,7 +41,7 @@ type DataMeter struct {
 	MA_DIEMDO             string
 	TENKHACHHANG          string
 	NOCONGTO              string
-	THOIGIANDOC           string
+	THOIGIANDOC           time.Time
 	DN_HUUCONG_GIAO       float64
 	DN_HUUCONG_GIAO_BIEU1 float64
 	DN_HUUCONG_GIAO_BIEU2 float64

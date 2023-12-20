@@ -4,6 +4,7 @@ import (
 	"app/model"
 	"encoding/json"
 	"log"
+	"time"
 )
 
 type MetersRequest struct {
@@ -53,8 +54,8 @@ func (c *MetersRequestToday) FromJson(a string) {
 type AddMeterRequest struct {
 	MA_DIEMDO             string
 	TENKHACHHANG          string
-	NOCONGTO              string `json:"meter_asset_no"`
-	THOIGIANDOC           string `json:"receive_time"`
+	NOCONGTO              string    `json:"meter_asset_no"`
+	THOIGIANDOC           time.Time `json:"receive_time"`
 	DN_HUUCONG_GIAO       float64
 	DN_HUUCONG_GIAO_BIEU1 float64
 	DN_HUUCONG_GIAO_BIEU2 float64
@@ -77,7 +78,7 @@ func (c *AddMeterRequest) ToModel() *model.DataMeter {
 	meter := &model.DataMeter{
 		MA_DIEMDO:             c.MA_DIEMDO,
 		TENKHACHHANG:          c.TENKHACHHANG,
-		NOCONGTO:              c.THOIGIANDOC,
+		NOCONGTO:              c.NOCONGTO,
 		THOIGIANDOC:           c.THOIGIANDOC,
 		DN_HUUCONG_GIAO:       c.DN_HUUCONG_GIAO,
 		DN_HUUCONG_GIAO_BIEU1: c.DN_HUUCONG_GIAO_BIEU1,

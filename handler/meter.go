@@ -55,6 +55,8 @@ func (l MeterHandler) GetMeter(ginCtx *gin.Context) {
 
 	meterRequest.ReceiveTime = formatted
 
+	fmt.Println("meterRequest", meterRequest)
+
 	uc := usecases.NewMeterUseCase()
 
 	tokens, err := uc.Search(ginCtx.Request.Context(), meterRequest.MeterAssetNo, meterRequest.ReceiveTime)

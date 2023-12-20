@@ -25,7 +25,7 @@ func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, Start_da
 
 	fmt.Println("Meter Model:", meterModel)
 
-	if meterModel == "HHM-V1" {
+	if meterModel == "HHM11-V1" {
 		query := `SElECT DISTINCT z.Ma_DIEMDO, z.tenkhachhang, z.nocongto, y.MR_TIME_FA thoigiandoc, z.dn_huucong_giao, z.dn_huucong_giao_bieu1, z.dn_huucong_giao_bieu2, z.dn_huucong_giao_bieu3,
             z.dn_huucong_nhan, z.dn_huucong_nhan_bieu1, z.dn_huucong_nhan_bieu2, z.dn_huucong_nhan_bieu3, z.dn_vocong_giao, z.dn_vocong_giao_bieu1, z.dn_vocong_giao_bieu2, z.dn_vocong_giao_bieu3,
             z.dn_vocong_nhan, z.dn_vocong_nhan_bieu1, z.dn_vocong_nhan_bieu2, z.dn_vocong_nhan_bieu3
@@ -55,7 +55,7 @@ func (s meterTodayRepository) Search(ctx context.Context, meterAssetNo, Start_da
     AND TRUNC(z.tv) <= TO_DATE(?, 'yyyy-mm-dd')` // Your query for HHM-V1 goes here
 		if err := s.db.Raw(query, meterAssetNo, Start_date, End_date, meterAssetNo, Start_date, End_date, Start_date, End_date).
 			Scan(&meters).Error; err != nil {
-
+			fmt.Println(meters)
 			return nil, err
 		}
 	} else if meterModel == "HHM31/38" {

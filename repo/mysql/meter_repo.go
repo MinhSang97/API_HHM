@@ -24,7 +24,7 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
 
 	fmt.Println("Meter Model:", meterModel)
 
-	if meterModel == "HHM-V1" {
+	if meterModel == "HHM11-V1" {
 		// Query for HHM-V1
 		query := `SELECT DISTINCT z.Ma_DIEMDO, z.tenkhachhang, z.nocongto, y.MR_TIME_FA thoigiandoc, z.dn_huucong_giao, z.dn_huucong_giao_bieu1, z.dn_huucong_giao_bieu2, z.dn_huucong_giao_bieu3,
 		z.dn_huucong_nhan, z.dn_huucong_nhan_bieu1, z.dn_huucong_nhan_bieu2, z.dn_huucong_nhan_bieu3, z.dn_vocong_giao, z.dn_vocong_giao_bieu1, z.dn_vocong_giao_bieu2, z.dn_vocong_giao_bieu3,
@@ -46,7 +46,6 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
 	ON z.Data_ID = y.Data_ID and y.MR_TIME_FA LIKE ?` // Your query for HHM-V1 goes here
 		if err := s.db.Raw(query, meterAssetNo, receiveTime, receiveTime).
 			Scan(&meters).Error; err != nil {
-
 			return nil, err
 		}
 	} else if meterModel == "HHM31/38" {
@@ -122,8 +121,6 @@ func (s meterRepository) Search(ctx context.Context, meterAssetNo, receiveTime s
 			return nil, err
 		}
 	}
-
-	// do something with result
 
 	return meters, nil
 }
