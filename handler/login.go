@@ -21,6 +21,10 @@ func (l LoginHandler) Login(ginCtx *gin.Context) {
 	loginRequest := payload.UserLoginRequest{}
 	// Lấy giá trị của các tham số từ query string
 
+	clientIP := ginCtx.ClientIP()
+
+	fmt.Println("Client IP:", clientIP)
+
 	if err := ginCtx.ShouldBindJSON(&loginRequest); err != nil {
 		ginCtx.JSON(http.StatusBadRequest, payload.Response{
 			Error: fmt.Errorf("Login error: %w", err).Error(),
