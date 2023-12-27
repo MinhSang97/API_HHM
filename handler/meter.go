@@ -59,7 +59,7 @@ func (l MeterHandler) GetMeter(ginCtx *gin.Context) {
 
 	uc := usecases.NewMeterUseCase()
 
-	tokens, err := uc.Search(ginCtx.Request.Context(), meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
+	meters, err := uc.Search(ginCtx.Request.Context(), meterRequest.MeterAssetNo, meterRequest.ReceiveTime)
 	if err != nil {
 		ginCtx.JSON(http.StatusInternalServerError, gin.H{
 			"error": err.Error(),
@@ -67,11 +67,9 @@ func (l MeterHandler) GetMeter(ginCtx *gin.Context) {
 		return
 	}
 
-	tokenResponse := tokens[0]
-
 	ginCtx.JSON(http.StatusOK, payload.Response{
 		Data: gin.H{
-			"data": tokenResponse,
+			"data": meters,
 		},
 	})
 }
